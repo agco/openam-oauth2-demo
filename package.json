@@ -1,8 +1,8 @@
 {
-  "name": "oauth-demo",
+  "name": "openam-oauth2-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/app/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.13.1",
-    "express": "^4.13.0"
+    "cookie-parser": "^1.3.5",
+    "express": "^4.13.0",
+    "http-as-promised": "^1.0.0",
+    "jade": "^1.11.0",
+    "lodash": "^3.10.0",
+    "passport": "^0.2.2",
+    "passport-oauth2": "^1.1.2"
   },
   "devDependencies": {
     "bluebird": "^2.9.30",

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Oauth demo</title>
+  <style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+    }
+  </style>
+</head>
+<body data-ng-app="app" data-ng-controller="AppCtrl as app" class="ng-cloak">
+
+<h1 id="signinSuccess" ng-show="app.signinSuccess">You have signed in successfully</h1>
+
+<h1 id="signinFailure" ng-show="app.signinFailure">Signin failed</h1>
+
+<h1 id="resourceError" ng-show="app.resourceError">{{ app.resourceError }}</h1>
+
+<a href="/api/auth" id="oauthSignin" ng-hide="app.isAuthenticated()">Signin via Oauth</a>
+<button type="button" id="logout" ng-click="app.logout()" ng-show="app.isAuthenticated()">Logout</button>
+<div ng-show="app.isAuthenticated()">
+  Access Token:
+  <input id="accessToken" ng-model="app.accessToken" readonly/>
+</div>
+
+<div ng-if="app.isAuthenticated()">
+  <button type="button" id="fetchResource" ng-click="app.fetchResource()">Fetch resource</button>
+  <pre id="resource">{{ app.resource | json }}</pre>
+</div>
+
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+
+<script src="app.module.js"></script>
+
+</body>
+</html>

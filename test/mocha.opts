@@ -1,0 +1,6 @@
+--ui bdd
+--reporter spec
+--recursive
+resource-server/test/**/*.spec.js
+openam-server/test/**/*.spec.js
+backend/test/**/*.spec.js

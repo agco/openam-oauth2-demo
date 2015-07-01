@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+body
+    form(method='post',action='/api/login')
+        div
+            div
+                label(for='username') Username
+            input.agco-user(name='username')
+        div
+            div
+                label(for='password') Password
+            input.agco-password(name='password',type='password')
+        if invalidPassword
+            p Invalid password
+        button.agco-submit-btn Login
+        input(type='hidden' name='redirect_uri' value=redirect_uri)
