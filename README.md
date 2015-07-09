@@ -41,6 +41,7 @@ To run automated tests with browser and see how everything integrates together y
 [oauth-demo/backend] node app
 [oauth-demo/resource-server] node app
 [oauth-demo/openam-server] node app
+[oauth-demo/fronted] grunt serve
 ```
 and finally
 ```
