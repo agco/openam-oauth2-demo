@@ -2,9 +2,12 @@ var app = require('./app.js');
 var config = require('../../config.js');
 
 /**
- * Don't panic, OpenAM SSL cert is not signed by any big guy
+ * This is in case you intend to use this demo against aaad.agcocorp.com
  */
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+require('ssl-root-cas')
+    .inject()
+    .addFile(__dirname + '/../DigiCertHighAssuranceEVRootCA.pem')
+    .addFile(__dirname + '/../DigiCertSHA2HighAssuranceServerCA.pem');
 
 var port = config.backendPort;
 

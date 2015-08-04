@@ -16,7 +16,8 @@
     "jade": "^1.11.0",
     "lodash": "^3.10.0",
     "passport": "^0.2.2",
-    "passport-oauth2": "^1.1.2"
+    "passport-oauth2": "^1.1.2",
+    "ssl-root-cas": "^1.1.10"
   },
   "devDependencies": {
     "bluebird": "^2.9.30",
