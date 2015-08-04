@@ -53,7 +53,6 @@ describe('Backend app', function () {
         /**
          * Setup backend
          */
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
         var app = createApp(config.frontend.successUrl, config.frontend.failureUrl);
         backendServer = app.listen(backendPort, done);
         chaiRequest = chai.request('http://localhost:' + backendPort);
