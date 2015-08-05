@@ -31,6 +31,12 @@ Feature: OAuth signin
     Then I should not see "home.logout"
     Then I should not see "home.accessToken"
 
+  Scenario: Refresh token
+    Given I should see "home.refreshToken"
+    When I click "home.refreshTokenButton"
+    Then I should see "home.logout"
+    Then I should see "home.accessToken"
+
   Scenario: Fetch resource after successfull signin
     Given I am an anonymous user
     When I browse to the "/"

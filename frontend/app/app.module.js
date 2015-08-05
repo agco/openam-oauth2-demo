@@ -3,7 +3,7 @@
 
     var app = angular.module('app', ['ngCookies']);
 
-    app.controller('AppCtrl', function ($location, $cookies, $http, $interval, $scope) {
+    app.controller('AppCtrl', function ($location, $cookies, $http, $interval, $scope, $timeout) {
         var ctrl = this;
 
         this.isAuthenticated = function () {
@@ -23,9 +23,8 @@
 
         this.refreshAccessToken = function () {
             $http.get('/api/refresh').then(function () {
-                var interval = $interval(function () {
+                $timeout(function () {
                     ctrl.accessToken = $cookies.access_token;
-                    $interval.cancel(interval);
                 }, 500);
             }).catch(function (error) {
                     console.error(error);
