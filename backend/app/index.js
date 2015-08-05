@@ -6,8 +6,8 @@ var config = require('../../config.js');
  */
 require('ssl-root-cas')
     .inject()
-    .addFile(__dirname + '/../DigiCertHighAssuranceEVRootCA.pem')
-    .addFile(__dirname + '/../DigiCertSHA2HighAssuranceServerCA.pem');
+    .addFile(__dirname + '/../ssl/DigiCertHighAssuranceEVRootCA.pem')
+    .addFile(__dirname + '/../ssl/DigiCertSHA2HighAssuranceServerCA.pem');
 
 var port = config.backendPort;
 
