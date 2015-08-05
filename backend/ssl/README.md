@@ -1,7 +1,7 @@
 SSL magic
 =========
 
-'aaad.agcocorp.com' servers use DigiCert SSL certs, which are not recognized by NodeJS, resulting in `UNABLE_TO_VERIFY_LEAF_SIGNATURE` exception
+Some servers use SSL certs from CAs that are not recognized by NodeJS, resulting in `UNABLE_TO_VERIFY_LEAF_SIGNATURE` exception
 when `passport-oauth2` is trying to obtain access token.
 
 To solve that we use a very nice module that injects the CA certificates into chain used by NodeJS:
@@ -17,11 +17,11 @@ Now the tricky part is how I got those PEMs.
 
 ## 1. Fetch hosts cert:
 
-    openssl s_client -showcerts -connect aaad.agcocorp.com:443 </dev/null 2>/dev/null > aaad.agcocorp.com.pem
+    openssl s_client -showcerts -connect serverWithCheapSSLCert:443 </dev/null 2>/dev/null > serverWithCheapSSLCert.pem
 
 ## 2. Read who issued the cert:
 
-    openssl x509 -in aaad.agcocorp.com.pem -text -noout
+    openssl x509 -in serverWithCheapSSLCert.pem -text -noout
 
 You should see something like
 
