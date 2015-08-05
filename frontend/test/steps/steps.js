@@ -36,6 +36,14 @@ module.exports = function () {
         callback();
     });
 
+    this.Given(/^I am anonymous to OpenAM server$/, function (callback) {
+        browser.ignoreSynchronization = true;
+        browser.get(config.oauth.authorizationURL).then(function () {
+            browser.manage().deleteAllCookies();
+            browser.ignoreSynchronization = false;
+        }).then(callback);
+    });
+
     this.When(/^I browse to the "([^"]*)"$/, function (url, callback) {
         browser.get('/#' + url).then(callback);
     });
@@ -107,18 +115,18 @@ module.exports = function () {
     }
 
     this.When(/^Access token expired$/, function (callback) {
-        callResourceApi('http://localhost:'+config.resource.port+'/force401')
-            .then(function (resul) {
+        callResourceApi('http://localhost:' + config.resource.port + '/force401')
+            .then(function () {
                 return browser.driver.sleep(openWindowDelay);
             }).then(callback);
     });
 
     this.When(/^Access token is valid$/, function (callback) {
         fragments('home.accessToken')().getWebElement().getAttribute('value').then(function (accessToken) {
-            var url = 'http://localhost:'+config.resource.port+'/valid-access-token?accessToken=' + accessToken;
+            var url = 'http://localhost:' + config.resource.port + '/valid-access-token?accessToken=' + accessToken;
             return callResourceApi(url).then(function () {
-                return callResourceApi('http://localhost:'+config.resource.port+'/force401/revoke')
-            }).then(function (result) {
+                return callResourceApi('http://localhost:' + config.resource.port + '/force401/revoke')
+            }).then(function () {
                     return browser.driver.sleep(openWindowDelay);
                 });
         }).then(callback)

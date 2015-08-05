@@ -41,8 +41,13 @@ function createApp(frontendSuccessUrl, frontendErrorUrl) {
     app.use(cookieParser());
 
     app.get('/refresh', function (req, res) {
-        var refreshtoken = req.cookies.refresh_token;
-        refresh.requestNewAccessToken('oauth2', refreshtoken, function (err, accessToken) {
+        var refreshToken = req.cookies.refresh_token;
+        if (!refreshToken) {
+            console.warn('No refresh token to refresh');
+            res.sendStatus(401);
+            return;
+        }
+        refresh.requestNewAccessToken('oauth2', refreshToken, function (err, accessToken) {
             if (err) {
                 console.error(err && err.stack || err);
                 res.sendStatus(401);
