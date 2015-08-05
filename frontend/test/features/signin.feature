@@ -4,6 +4,7 @@ Feature: OAuth signin
 
   Scenario: Use valid credentials
     Given I am an anonymous user
+    Given I am anonymous to OpenAM server
     When I browse to the "/"
     And I click oauth signin button
     And I sign into oauth provider with valid credentials
@@ -13,6 +14,7 @@ Feature: OAuth signin
 
   Scenario: Use invalid credentials
     Given I am an anonymous user
+    Given I am anonymous to OpenAM server
     When I browse to the "/"
     And I click oauth signin button
     And I sign into oauth provider with invalid credentials
@@ -21,6 +23,7 @@ Feature: OAuth signin
 
   Scenario: Fetch resource after successfull signin but token expired
     Given I am an anonymous user
+    Given I am anonymous to OpenAM server
     When I browse to the "/"
     And I click oauth signin button
     And I sign into oauth provider with valid credentials
@@ -39,6 +42,7 @@ Feature: OAuth signin
 
   Scenario: Fetch resource after successfull signin
     Given I am an anonymous user
+    Given I am anonymous to OpenAM server
     When I browse to the "/"
     And I click oauth signin button
     And I sign into oauth provider with valid credentials
