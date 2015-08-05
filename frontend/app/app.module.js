@@ -3,7 +3,7 @@
 
     var app = angular.module('app', ['ngCookies']);
 
-    app.controller('AppCtrl', function ($location, $cookies, $http, $interval, $scope) {
+    app.controller('AppCtrl', function ($location, $cookies, $http, $interval, $scope, $timeout) {
         var ctrl = this;
 
         this.isAuthenticated = function () {
@@ -14,6 +14,28 @@
             delete $cookies.access_token;
             ctrl.accessToken = null;
             $location.path('/');
+        };
+
+        this.removeRefreshToken = function () {
+            delete $cookies.refresh_token;
+            ctrl.refreshToken = null;
+        };
+
+        this.refreshAccessToken = function () {
+            $http.get('/api/refresh').then(function () {
+                $timeout(function () {
+                    ctrl.accessToken = $cookies.access_token;
+                }, 500);
+            }).catch(function (error) {
+                    console.error(error);
+                    ctrl.resourceError = 'There was an error while refreshing access token, logging out...';
+                    var interval = $interval(function () {
+                        delete ctrl.resourceError;
+                        $interval.cancel(interval);
+                    }, 3000);
+                    ctrl.logout();
+                    ctrl.removeRefreshToken();
+                });
         };
 
         this.fetchResource = function () {
@@ -41,6 +63,7 @@
         });
 
         this.accessToken = $cookies.access_token;
+        this.refreshToken = $cookies.refresh_token;
 
 
     });

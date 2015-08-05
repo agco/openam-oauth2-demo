@@ -26,6 +26,8 @@ var fragments = function (text) {
 
     var mapping = {
         home: {
+            refreshToken: element.bind(null, by.id('refreshToken')),
+            refreshTokenButton: element.bind(null, by.id('refreshTokenButton')),
             accessToken: element.bind(null, by.id('accessToken')),
             oauthSigninButton: element.bind(null, by.id('oauthSignin')),
             signinSuccess: element.bind(null, by.id('signinSuccess')),

@@ -6,12 +6,13 @@ var express = require('express');
 var httpAsPromised = require('http-as-promised');
 var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth2');
+var refresh = require('passport-oauth2-refresh');
 var config = require('../../config.js');
 
 function createApp(frontendSuccessUrl, frontendErrorUrl) {
     var strategy = new OAuth2Strategy(config.oauth,
         function (accessToken, refreshToken, profile, done) {
-            done(null, {username: 'Monkey', accessToken: accessToken});
+            done(null, {username: 'Monkey', accessToken: accessToken, refreshToken: refreshToken});
         }
     );
     strategy._oauth2.getAuthorizeUrl = function (params) {
@@ -19,11 +20,12 @@ function createApp(frontendSuccessUrl, frontendErrorUrl) {
         params['client_id'] = this._clientId;
         var parsedUrl = url.parse(this._baseSite + this._authorizeUrl);
         var query = querystring.parse(parsedUrl.query);
-        _.extend(query, params, {scope:config.oauth.scope});
+        _.extend(query, params, {scope: config.oauth.scope});
         parsedUrl.search = '?' + querystring.stringify(query);
         return  url.format(parsedUrl);
     };
     passport.use(strategy);
+    refresh.use(strategy);
 
     passport.serializeUser(function (user, done) {
         done(null, user.username);
@@ -37,6 +39,19 @@ function createApp(frontendSuccessUrl, frontendErrorUrl) {
 
     app.use(passport.initialize());
     app.use(cookieParser());
+
+    app.get('/refresh', function (req, res) {
+        var refreshtoken = req.cookies.refresh_token;
+        refresh.requestNewAccessToken('oauth2', refreshtoken, function (err, accessToken) {
+            if (err) {
+                console.error(err && err.stack || err);
+                res.sendStatus(401);
+                return;
+            }
+            res.cookie('access_token', accessToken);
+            res.sendStatus(200);
+        });
+    });
 
     app.get('/auth', passport.authenticate('oauth2'));
     /**
@@ -57,6 +72,7 @@ function createApp(frontendSuccessUrl, frontendErrorUrl) {
                         return;
                     }
                     res.cookie('access_token', user.accessToken);
+                    res.cookie('refresh_token', user.refreshToken);
                     res.redirect(frontendSuccessUrl);
                 }
             )(req, res, next)
