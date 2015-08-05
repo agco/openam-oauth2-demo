@@ -23,6 +23,12 @@
   Access Token:
   <input id="accessToken" ng-model="app.accessToken" readonly/>
 </div>
+<div ng-show="app.refreshToken">
+  Refresh Token:
+  <input id="accessToken" ng-model="app.refreshToken" readonly/>
+  <button type="button" ng-click="app.removeRefreshToken()">Remove</button>
+  <button type="button" ng-click="app.refreshAccessToken()">Refresh</button>
+</div>
 
 <div ng-if="app.isAuthenticated()">
   <button type="button" id="fetchResource" ng-click="app.fetchResource()">Fetch resource</button>

@@ -16,6 +16,29 @@
             $location.path('/');
         };
 
+        this.removeRefreshToken = function () {
+            delete $cookies.refresh_token;
+            ctrl.refreshToken = null;
+        };
+
+        this.refreshAccessToken = function () {
+            $http.get('/api/refresh').then(function () {
+                var interval = $interval(function () {
+                    ctrl.accessToken = $cookies.access_token;
+                    $interval.cancel(interval);
+                }, 500);
+            }).catch(function (error) {
+                    console.error(error);
+                    ctrl.resourceError = 'There was an error while refreshing access token, logging out...';
+                    var interval = $interval(function () {
+                        delete ctrl.resourceError;
+                        $interval.cancel(interval);
+                    }, 3000);
+                    ctrl.logout();
+                    ctrl.removeRefreshToken();
+                });
+        };
+
         this.fetchResource = function () {
             $http.get('/api/resource').then(function (result) {
                 ctrl.resource = result.data;
@@ -41,6 +64,7 @@
         });
 
         this.accessToken = $cookies.access_token;
+        this.refreshToken = $cookies.refresh_token;
 
 
     });
